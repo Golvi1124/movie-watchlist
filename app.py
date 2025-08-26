@@ -24,7 +24,7 @@ def prompt_add_movie():
 
     database.add_movie(title, timestamp)
 
-def print_movie_liest(heading, movies):
+def print_movie_list(heading, movies):
     print(f"-- {heading} movies --")
     for movie in movies:
         movie_date = datetime.datetime.fromtimestamp(movie[1])
@@ -32,9 +32,16 @@ def print_movie_liest(heading, movies):
         print(f"{movie[0]} (on {human_date})")
     print("---- \n")
 
+def print_watched_movie_list(username, movies):
+    print(f"-- {username}'s watched movies --")
+    for movie in movies:
+        print(f"{movie[1]}")
+    print("---- \n")
+
 def promt_watch_movie():
+    username = input("Username: ")
     movie_title = input("Enter movie title you've watched: ")
-    database.watch_movie(movie_title)
+    database.watch_movie(username, movie_title)
 
 
 while (user_input := input(menu)) != "6":
@@ -42,14 +49,15 @@ while (user_input := input(menu)) != "6":
         prompt_add_movie()
     elif user_input == "2":
         movies = database.get_movies(True)
-        print_movie_liest("Upcomming", movies)
+        print_movie_list("Upcomming", movies)
     elif user_input == "3":
         movies = database.get_movies()
-        print_movie_liest("All", movies)
+        print_movie_list("All", movies)
     elif user_input == "4":
         promt_watch_movie()
     elif user_input == "5":
-        movies = database.get_watched_movies()
-        print_movie_liest("Watched", movies)
+        username = input("Usename: ")
+        movies = database.get_watched_movies(username)
+        print_watched_movie_list(username, movies)
     else:
         print("Invalid input, please try again!")
